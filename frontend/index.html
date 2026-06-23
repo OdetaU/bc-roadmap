@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BC SaaS Roadmap</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-screen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">BC</div>
+    <h1>BC SaaS Roadmap</h1>
+    <p>Prisijunkite su savo StrongPoint Microsoft paskyra</p>
+    <button class="btn primary large" onclick="App.login()">
+      <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:8px"><path d="M10 1H1v9h9V1z" fill="#F25022"/><path d="M20 1h-9v9h9V1z" fill="#7FBA00"/><path d="M10 11H1v9h9v-9z" fill="#00A4EF"/><path d="M20 11h-9v9h9v-9z" fill="#FFB900"/></svg>
+      Prisijungti su Microsoft
+    </button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">BC</div>
+      <span class="header-title">SaaS Roadmap</span>
+    </div>
+    <div class="header-right">
+      <button class="btn small" onclick="App.refresh()" title="Atnaujinti duomenis">↻ Atnaujinti</button>
+      <span class="user-badge" id="user-name"></span>
+      <button class="btn small" onclick="App.logout()">Atsijungti</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="App.showTab('dashboard')" id="tab-dashboard">Apžvalga</button>
+    <button class="tab" onclick="App.showTab('updates')" id="tab-updates">Naujinimai</button>
+    <button class="tab" onclick="App.showTab('gantt')" id="tab-gantt">Gantt</button>
+    <button class="tab" onclick="App.showTab('secrets')" id="tab-secrets">Secrets / Relationships</button>
+    <button class="tab" onclick="App.showTab('versions')" id="tab-versions">BC Versijos</button>
+  </div>
+
+  <main class="main">
+    <div id="sec-dashboard" class="section active"></div>
+    <div id="sec-updates" class="section"></div>
+    <div id="sec-gantt" class="section"></div>
+    <div id="sec-secrets" class="section"></div>
+    <div id="sec-versions" class="section"></div>
+  </main>
+</div>
+
+<!-- Update Modal -->
+<div class="modal-bg" id="modal-update">
+  <div class="modal">
+    <h3 id="modal-update-title">Naujas naujinimas</h3>
+    <div class="form-grid">
+      <div class="form-row"><label>Klientas</label><select id="f-client"></select></div>
+      <div class="form-row"><label>Aplinka</label>
+        <select id="f-env"><option>Sandbox + Prod</option><option>Tik Sandbox</option><option>Tik Prod</option></select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Esama versija</label><input id="f-cur-ver" placeholder="pvz. BC 24.5"></div>
+      <div class="form-row"><label>Tikslinis naujinimas</label><input id="f-new-ver" placeholder="pvz. BC 25.3"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Kėlimas į Test</label><input type="date" id="f-d-test"></div>
+      <div class="form-row"><label>Testavimo pabaiga</label><input type="date" id="f-d-testend"></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Kėlimas į Prod</label><input type="date" id="f-d-prod"></div>
+      <div class="form-row"><label>Informuoti klientą iki</label><input type="date" id="f-d-notify"></div>
+    </div>
+    <div class="form-row"><label>Statusas</label>
+      <select id="f-status">
+        <option value="planned">Planuojama</option>
+        <option value="notified">Klientas informuotas</option>
+        <option value="test">Test aplinkoje</option>
+        <option value="testing">Testavimas vyksta</option>
+        <option value="prod">Prod aplinkoje</option>
+        <option value="done">Baigta</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Pastabos</label><textarea id="f-notes"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('modal-update')">Atšaukti</button>
+      <button class="btn primary" onclick="App.saveUpdate()">Išsaugoti</button>
+    </div>
+  </div>
+</div>
+
+<!-- Secret Modal -->
+<div class="modal-bg" id="modal-secret">
+  <div class="modal">
+    <h3 id="modal-secret-title">Naujas įrašas</h3>
+    <div class="form-grid">
+      <div class="form-row"><label>Klientas</label><select id="fs-client"></select></div>
+      <div class="form-row"><label>Tipas</label>
+        <select id="fs-type">
+          <option value="appreg">App Registration Secret</option>
+          <option value="admin">Admin Relationship</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row"><label>Pavadinimas</label><input id="fs-name" placeholder="pvz. BC Prod App Secret"></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Galioja iki</label><input type="date" id="fs-expires"></div>
+      <div class="form-row"><label>Įspėjimas likus (dienų)</label><input type="number" id="fs-warn" value="30"></div>
+    </div>
+    <div class="form-row"><label>Pastabos</label><textarea id="fs-notes"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('modal-secret')">Atšaukti</button>
+      <button class="btn primary" onclick="App.saveSecret()">Išsaugoti</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

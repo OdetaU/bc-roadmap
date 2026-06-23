@@ -1,0 +1,21 @@
+{
+  "name": "bc-roadmap-backend",
+  "version": "1.0.0",
+  "description": "BC SaaS Update Roadmap - Azure Functions backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/identity": "^4.4.1",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials": "*",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
