@@ -8,7 +8,7 @@ const CONFIG = {
   // Azure AD config for login
   msalConfig: {
     auth: {
-      clientId: 'ĮRAŠYKITE_FRONTEND_APP_CLIENT_ID',
+      clientId: '85682292-7839-4196-a85a-c3f8d196d700',
       authority: 'https://login.microsoftonline.com/uabstrongpoint.onmicrosoft.com',
       redirectUri: window.location.origin,
     },
