@@ -9,7 +9,7 @@ const CONFIG = {
   msalConfig: {
     auth: {
       clientId: '85682292-7839-4196-a85a-c3f8d196d700',
-      authority: 'https://login.microsoftonline.com/uabstrongpoint.onmicrosoft.com',
+      authority: 'https://login.microsoftonline.com/70b2dd63-cbac-4385-bed6-cd2cdf4b058f',
       redirectUri: window.location.origin,
     },
     cache: { cacheLocation: 'sessionStorage' },
